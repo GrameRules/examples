@@ -1,13 +1,37 @@
 import sys
+import torch
+from torchvision import transforms
+from torchvision.utils import save_image
 
-class Logger(object):
-	def __init__(self, filename='default.log', stream=sys.stdout):
-		self.terminal = stream
-		self.log = open(filename, 'a')
+def plot_sample_img(img, name):
+    img = img.view(1, 28, 28)
+    save_image(img, './sample_{}.png'.format(name))
 
-	def write(self, message):
-		self.terminal.write(message)
-		self.log.write(message)
+r"""
+Binarized data is obtained by min_max+round
+"""
+def min_max_normalization(tensor, min_value, max_value):
+    min_tensor = tensor.min()
+    tensor = (tensor - min_tensor)
+    max_tensor = tensor.max()
+    tensor = tensor / max_tensor
+    tensor = tensor * (max_value - min_value) + min_value
+    return tensor
 
-	def flush(self):
-		pass
+
+def tensor_round(tensor):
+    return torch.round(tensor)
+
+def binarize_data():
+
+    return transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Lambda(lambda tensor:min_max_normalization(tensor, 0, 1)),
+    transforms.Lambda(lambda tensor:tensor_round(tensor))])
+
+
+def add_noise(img,device):
+    noise = torch.randn(img.size()) * 0.4
+    noise = noise.to(device)
+    noisy_img = img + noise
+    return noisy_img

@@ -5,12 +5,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
+from torchsummary import summary
+import matplotlib.pyplot as plt
 
 
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 20, 5, 1)
+
+        weight = self.conv1.weight.data.cpu().numpy()
+        plt.imshow(weight[0, 0, :, :])
+
         self.conv2 = nn.Conv2d(20, 50, 5, 1)
         self.fc1 = nn.Linear(4*4*50, 500)
         self.fc2 = nn.Linear(500, 10)
@@ -111,6 +117,11 @@ def main():
 
     if (args.save_model):
         torch.save(model.state_dict(),"mnist_cnn.pt")
+
+
+
+    summary(model, (1, 28, 28))
+
         
 if __name__ == '__main__':
     main()

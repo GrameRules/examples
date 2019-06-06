@@ -65,6 +65,7 @@ class VAE(nn.Module):
         return self.decode(z), mu, logvar
 
 
+
 model = VAE().to(device)
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
