@@ -1,0 +1,12 @@
+import sys
+from ae_utils import Logger
+
+f = open('b.log', 'a')
+sys.stdout = f
+sys.stderr = f
+
+sys.stdout = Logger('b.log', sys.stdout)
+sys.stderr = Logger('b.log_file', sys.stderr)		# redirect std err, if necessary
+
+# now it works
+print('a')
