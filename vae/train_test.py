@@ -59,7 +59,7 @@ def test(epoch,data_loader,model,device,args):
                                         noisy_data[:n],
                                       recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
                 save_image(comparison.cpu(),
-                         'results/%s_%s_rec_'  %(model.__name__,str(args.data_binary))+ str(epoch) + '.png', nrow=n)
+                         'results/%s_%s_rec_'  %(model._get_name(),str(args.data_binary))+ str(epoch) + '.png', nrow=n)
 
     test_loss /= len(data_loader.dataset)
     test_loss_mle /= len(data_loader.dataset)
